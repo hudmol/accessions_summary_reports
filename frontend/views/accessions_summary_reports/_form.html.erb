@@ -1,0 +1,18 @@
+<%= render_aspace_partial :partial => "shared/form_messages", :locals => {:object => @accessions_summary_report, :form => form} %>
+
+<% define_template("accessions_summary_report", jsonmodel_definition(:accessions_summary_report)) do |form| %>
+  <section id="basic_information">
+    <fieldset>
+    <%= form.label_and_date "start_date", {:plugin => true} %>
+    <%= form.label_and_date "end_date", {:plugin => true} %>
+    <%= form.label_and_select "report", form.possible_options_for("report", true), {:plugin => true} %>
+    </fieldset>
+  </section>
+<% end %>
+
+<% form.emit_template("accessions_summary_report") %>
+
+<div class="form-actions">
+  <button type="submit" class="btn btn-primary"><%= I18n.t("plugins.accessions_summary_reports.run") %></button>
+  <%= link_to I18n.t("actions.cancel"), :back, :class => "btn btn-cancel" %>
+</div>

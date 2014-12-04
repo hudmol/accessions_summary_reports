@@ -3,3 +3,8 @@ en:
     accessions_summary_reports:
       label: Accessions Summary Reports
       title: Accessions Summary Reports
+      run: Run Report
+    accessions_summary_report:
+      start_date: Start Date
+      end_date: End Date
+      report: Report Type
