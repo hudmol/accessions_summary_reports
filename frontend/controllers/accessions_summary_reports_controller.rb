@@ -7,7 +7,20 @@ class AccessionsSummaryReportsController < ApplicationController
   end
    
   def create
+    begin
+      post_data = {
+        :start_date => params["accessions_summary_report"]["start_date"],
+        :end_date => params["accessions_summary_report"]["end_date"],
+        :report => params["accessions_summary_report"]["report"]
+      }
 
+      response = JSONModel::HTTP.get_json("/repositories/#{session[:repo_id]}/accessions_summary_reports", post_data)
+
+      @params = params["accessions_summary_report"]
+      @response = response
+
+    rescue Exception => e
+    end
   end
 
 end
