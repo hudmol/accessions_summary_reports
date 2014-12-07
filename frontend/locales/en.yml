@@ -4,7 +4,20 @@ en:
       label: Accessions Summary Reports
       title: Accessions Summary Reports
       run: Run Report
+      clear: Clear form
+      return: Return to form
     accessions_summary_report:
       start_date: Start Date
       end_date: End Date
       report: Report Type
+    accessions_received_report:
+      title: Accessions Received
+      new: New
+      additions: Additions
+      total: Total
+      number: Accessions
+      extent: Extent
+  accessions_summary_report:
+    start_date: Start Date
+    end_date: End Date
+    report: Report Type

@@ -3,23 +3,32 @@ class AccessionsSummaryReportsController < ApplicationController
   skip_before_filter :unauthorised_access
 
   def index
+#    @accessions_summary_report = JSONModel(:accessions_summary_report).new
     @accessions_summary_report = JSONModel(:accessions_summary_report).new._always_valid!
   end
-   
+
+
   def create
-    begin
-      post_data = {
-        :start_date => params["accessions_summary_report"]["start_date"],
-        :end_date => params["accessions_summary_report"]["end_date"],
-        :report => params["accessions_summary_report"]["report"]
-      }
-
-      response = JSONModel::HTTP.get_json("/repositories/#{session[:repo_id]}/accessions_summary_reports", post_data)
-
-      @params = params["accessions_summary_report"]
-      @response = response
-
-    rescue Exception => e
+    @accessions_summary_report = JSONModel(:accessions_summary_report).from_hash(params["accessions_summary_report"], false)
+    if @accessions_summary_report._exceptions.blank?
+      begin
+        query_hash = {
+          :start_date => @accessions_summary_report["start_date"],
+          :end_date => @accessions_summary_report["end_date"],
+          :report => @accessions_summary_report["report"]
+        }
+        
+        response = JSONModel::HTTP.get_json("/repositories/#{session[:repo_id]}/accessions_summary_reports", query_hash)
+        
+        @params = params["accessions_summary_report"]
+        @data = response
+        
+      rescue Exception => e
+        render action: "index"
+      end
+    else
+      @exceptions = @accessions_summary_report._exceptions
+      render action: "index"
     end
   end
 

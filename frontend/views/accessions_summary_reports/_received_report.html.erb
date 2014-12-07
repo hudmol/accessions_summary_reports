@@ -1,0 +1,28 @@
+<h2><%= I18n.t("plugins.accessions_received_report.title") %></h2>
+<div>
+  <table class="table table-striped table-bordered table-condensed">
+    <tbody>
+    <tr> 
+      <th><%= @params['start_date'] %> &mdash; <%= @params['end_date'] %></th>
+      <th><%= I18n.t("plugins.accessions_received_report.number") %></th>
+      <th>Extent</th>
+    </tr>
+    <tr>
+      <th>New</th>
+      <td><%= @data['new_accs'] %></td>
+      <td><%= @data['new_extent'] %></td>
+    </tr>
+    <tr>
+      <th>Additions</th>
+      <td><%= @data['add_accs'] %></td>
+      <td><%= @data['add_extent'] %></td>
+    </tr>
+    <tr>
+      <th>Total</th>
+      <td><%= @data['total_accs'] %></td>
+      <td><%= @data['total_extent'] %></td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>
