@@ -74,11 +74,32 @@ class ArchivesSpaceService < Sinatra::Base
 
       data[:total_accs] = 0
       data[:total_extent] = 0
+      data[:unprocessed_accs] = 0
+      data[:unprocessed_extent] = 0
 
       ds.each do |row|
         data[:total_accs] += 1
         data[:total_extent] += row[:number].to_f
       end
+
+      processed_ds = db[:accession]
+        .select(:accession__id)
+        .join(:event_link_rlshp, {:accession_id => :accession__id}, :table_alias => :event_link)
+        .join(:event, {:id => :event_link__event_id}, :table_alias => :event)
+        .join(:enumeration_value, {:id => :event__event_type_id}, :table_alias => :event_type)
+        .where(:accession__repo_id => params[:repo_id])
+        .where('event_type.value = ?', 'processed')
+
+      unprocessed_ds = db[:accession]
+        .select(:extent__number)
+        .left_outer_join(:extent, :accession_id => :accession__id)
+        .where(Sequel.~(:accession__id=>processed_ds))
+
+      unprocessed_ds.each do |row|
+        data[:unprocessed_accs] += 1
+        data[:unprocessed_extent] += row[:number].to_f
+      end
+
     end
     data
   end

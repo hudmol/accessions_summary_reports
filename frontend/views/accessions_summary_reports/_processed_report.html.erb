@@ -1,5 +1,6 @@
 <h2><%= I18n.t("plugins.accessions_processed_report.title") %></h2>
 <div>
+
   <table class="table table-striped table-bordered table-condensed">
     <tbody>
     <tr> 
@@ -11,6 +12,24 @@
       <th><%= I18n.t("plugins.accessions_processed_report.total") %></th>
       <td><%= @data['total_accs'] %></td>
       <td><%= @data['total_extent'] %></td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>
+<div>
+
+  <table class="table table-striped table-bordered table-condensed">
+    <tbody>
+    <tr> 
+      <th><%= I18n.t("plugins.accessions_processed_report.unprocessed") %></th>
+      <th><%= I18n.t("plugins.accessions_processed_report.number") %></th>
+      <th><%= I18n.t("plugins.accessions_processed_report.extent") %></th>
+    </tr>
+    <tr>
+      <th><%= I18n.t("plugins.accessions_processed_report.total") %></th>
+      <td><%= @data['unprocessed_accs'] %></td>
+      <td><%= @data['unprocessed_extent'] %></td>
     </tr>
     </tbody>
   </table>

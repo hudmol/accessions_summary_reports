@@ -19,6 +19,7 @@ en:
       extent: Extent
     accessions_processed_report:
       title: Accessions Processed
+      unprocessed: Unprocessed Accessions
       total: Total
       number: Accessions
       extent: Extent
