@@ -52,9 +52,6 @@ class ArchivesSpaceService < Sinatra::Base
           data[:add_extent] += row[:number].to_f
         end
       end
-
-      puts "SSSSSSSSSSSS  #{ds.sql}"
-      puts "DDDDDDDDDDDD  #{ds.all}"
     end
     data
   end
@@ -63,22 +60,25 @@ class ArchivesSpaceService < Sinatra::Base
   def run_processed_report(params)
     data = {}
     DB.open do |db|
-      ds = db[:event_link_rlshp]
-        .join(:accession, :accession__id => :accession_id)
-        .join(:event, :event__id => :event_id)
-        .filter(:repo_id => params[:repo_id])
-        .where('event_type = ? AND timestamp >= ? AND timestamp <= ?', 'processed', params[:start_date], params[:end_date])
+      ds = db[:event]
+        .select(:accession__id, :accession__identifier, :event_type__value, :event_outcome__value, :extent__number, :date__begin)
+        .join(:enumeration_value, {:id => :event__event_type_id}, :table_alias => :event_type)
+        .join(:enumeration_value, {:id => :event__outcome_id}, :table_alias => :event_outcome)
+        .join(:date, {:event_id => :event__id}, :table_alias => :date)
+        .join(:event_link_rlshp, {:event_id => :event__id}, :table_alias => :event_link)
+        .join(:accession, :id => :event_link__accession_id)
+        .left_outer_join(:extent, :accession_id => :accession__id)
+        .where(:event__repo_id => params[:repo_id])
+        .where('event_type.value = ? AND event_outcome.value = ?', 'processed', 'pass')
+        .where('(date."BEGIN" >= ? AND date."BEGIN" <= ?) OR (date.expression >= ? AND date.expression <= ?)', params[:start_date], params[:end_date], params[:start_date], params[:end_date])
 
       data[:total_accs] = 0
       data[:total_extent] = 0
 
       ds.each do |row|
         data[:total_accs] += 1
-#        data[:total_extent] += row[:number].to_f
+        data[:total_extent] += row[:number].to_f
       end
-
-      puts "SSSSSSSSSSSS  #{ds.sql}"
-      puts "DDDDDDDDDDDD  #{ds.all}"
     end
     data
   end

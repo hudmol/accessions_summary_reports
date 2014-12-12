@@ -5,20 +5,20 @@
     <tr> 
       <th><%= @params['start_date'] %> &mdash; <%= @params['end_date'] %></th>
       <th><%= I18n.t("plugins.accessions_received_report.number") %></th>
-      <th>Extent</th>
+      <th><%= I18n.t("plugins.accessions_received_report.extent") %></th>
     </tr>
     <tr>
-      <th>New</th>
+      <th><%= I18n.t("plugins.accessions_received_report.new") %></th>
       <td><%= @data['new_accs'] %></td>
       <td><%= @data['new_extent'] %></td>
     </tr>
     <tr>
-      <th>Additions</th>
+      <th><%= I18n.t("plugins.accessions_received_report.additions") %></th>
       <td><%= @data['add_accs'] %></td>
       <td><%= @data['add_extent'] %></td>
     </tr>
     <tr>
-      <th>Total</th>
+      <th><%= I18n.t("plugins.accessions_received_report.total") %></th>
       <td><%= @data['total_accs'] %></td>
       <td><%= @data['total_extent'] %></td>
     </tr>

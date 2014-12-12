@@ -1,8 +1,8 @@
 en:
   plugins:
     accessions_summary_reports:
-      label: Accessions Summary Reports
-      title: Accessions Summary Reports
+      label: Accession Summary Reports
+      title: Accession Summary Reports
       run: Run Report
       clear: Clear form
       return: Return to form
@@ -14,6 +14,11 @@ en:
       title: Accessions Received
       new: New
       additions: Additions
+      total: Total
+      number: Accessions
+      extent: Extent
+    accessions_processed_report:
+      title: Accessions Processed
       total: Total
       number: Accessions
       extent: Extent
