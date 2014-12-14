@@ -59,6 +59,17 @@ class ArchivesSpaceService < Sinatra::Base
 
   def run_processed_report(params)
     data = {}
+
+    # derby freaks out at 'begin'
+    if $db_type == :derby
+      begin_string = '"BEGIN"'
+    elsif $db_type == :mysql
+      begin_string = 'begin'
+    else
+      # warning - only tested on derby and mysql
+      begin_string = 'begin'
+    end
+
     DB.open do |db|
       ds = db[:event]
         .select(:accession__id, :accession__identifier, :event_type__value, :event_outcome__value, :extent__number, :date__begin)
@@ -70,7 +81,7 @@ class ArchivesSpaceService < Sinatra::Base
         .left_outer_join(:extent, :accession_id => :accession__id)
         .where(:event__repo_id => params[:repo_id])
         .where('event_type.value = ? AND event_outcome.value = ?', 'processed', 'pass')
-        .where('(date."BEGIN" >= ? AND date."BEGIN" <= ?) OR (date.expression >= ? AND date.expression <= ?)', params[:start_date], params[:end_date], params[:start_date], params[:end_date])
+        .where("(date.#{begin_string} >= ? AND date.#{begin_string} <= ?) OR (date.expression >= ? AND date.expression <= ?)", params[:start_date], params[:end_date], params[:start_date], params[:end_date])
 
       data[:total_accs] = 0
       data[:total_extent] = 0
