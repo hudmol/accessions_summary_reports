@@ -60,6 +60,12 @@ class ArchivesSpaceService < Sinatra::Base
   def run_processed_report(params)
     data = {}
 
+    data[:total_accs] = 0
+    data[:total_extent] = 0
+    data[:unprocessed_accs] = 0
+    data[:unprocessed_extent] = 0
+    data[:bad_date] = []
+
     # derby freaks out at 'begin'
     if $db_type == :derby
       begin_string = '"BEGIN"'
@@ -71,6 +77,7 @@ class ArchivesSpaceService < Sinatra::Base
     end
 
     DB.open do |db|
+      # find accessions processed within the given date range
       ds = db[:event]
         .select(:accession__id, :accession__identifier, :event_type__value, :event_outcome__value, :extent__number, :date__begin)
         .join(:enumeration_value, {:id => :event__event_type_id}, :table_alias => :event_type)
@@ -83,23 +90,19 @@ class ArchivesSpaceService < Sinatra::Base
         .where('event_type.value = ? AND event_outcome.value = ?', 'processed', 'pass')
         .where("(date.#{begin_string} >= ? AND date.#{begin_string} <= ?) OR (date.expression >= ? AND date.expression <= ?)", params[:start_date], params[:end_date], params[:start_date], params[:end_date])
 
-      data[:total_accs] = 0
-      data[:total_extent] = 0
-      data[:unprocessed_accs] = 0
-      data[:unprocessed_extent] = 0
-
       ds.each do |row|
         data[:total_accs] += 1
         data[:total_extent] += row[:number].to_f
       end
 
+      # find all unprocessed accessions
       processed_ds = db[:accession]
         .select(:accession__id)
         .join(:event_link_rlshp, {:accession_id => :accession__id}, :table_alias => :event_link)
         .join(:event, {:id => :event_link__event_id}, :table_alias => :event)
         .join(:enumeration_value, {:id => :event__event_type_id}, :table_alias => :event_type)
         .where(:accession__repo_id => params[:repo_id])
-        .where('event_type.value = ?', 'processed')
+        .where(:event_type__value => 'processed')
 
       unprocessed_ds = db[:accession]
         .select(:extent__number)
@@ -109,6 +112,21 @@ class ArchivesSpaceService < Sinatra::Base
       unprocessed_ds.each do |row|
         data[:unprocessed_accs] += 1
         data[:unprocessed_extent] += row[:number].to_f
+      end
+
+      # find all processed accessions with bad date formats
+      processed_bad_date_ds = db[:accession]
+        .select(:accession__id)
+        .join(:event_link_rlshp, {:accession_id => :accession__id}, :table_alias => :event_link)
+        .join(:event, {:id => :event_link__event_id}, :table_alias => :event)
+        .join(:date, {:event_id => :event__id}, :table_alias => :date)
+        .join(:enumeration_value, {:id => :event__event_type_id}, :table_alias => :event_type)
+        .where(:accession__repo_id => params[:repo_id])
+        .where(:event_type__value => 'processed')
+        .where("(date.#{begin_string} like '_%' AND date.#{begin_string} not like '____-__-__') OR (date.expression like '_%' AND date.expression not like '____-__-__')")
+
+      processed_bad_date_ds.each do |row|
+        data[:bad_date] << row[:id]
       end
 
     end

@@ -23,6 +23,7 @@ en:
       total: Total
       number: Accessions
       extent: Extent
+      bad_date_header: The following Accessions have incorrectly formatted dates in their processed events
   accessions_summary_report:
     start_date: Start Date
     end_date: End Date
