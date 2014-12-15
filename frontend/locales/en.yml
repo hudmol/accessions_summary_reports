@@ -1,4 +1,6 @@
 en:
+  user_defined:
+    boolean_1: New Accession
   plugins:
     accessions_summary_reports:
       label: Accession Summary Reports
