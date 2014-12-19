@@ -1,10 +1,10 @@
-version: 1.0
+version: 1.1
 archivesspace_target_version: 1.1.x
-release_date: 20141217
+release_date: 20141219
 description: Summary reports on Accessions
 dependencies:
 migration: false
 tests: false
-distribution: https://github.com/hudmol/accessions_summary_reports/releases/download/v1.1.x-1.0/accessions_summary_reports-v1.0.zip
+distribution: https://github.com/hudmol/accessions_summary_reports/releases/download/v1.1.x-1.1/accessions_summary_reports-v1.1.zip
 homepage: https://github.com/hudmol/accessions_summary_reports
 contact: james@hudmol.com

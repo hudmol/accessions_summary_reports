@@ -10,17 +10,17 @@
     <tr>
       <th><%= I18n.t("plugins.accessions_received_report.new") %></th>
       <td><%= @data['new_accs'] %></td>
-      <td><%= @data['new_extent'] %></td>
+      <td><%= sprintf("%.2f", @data['new_extent']) %></td>
     </tr>
     <tr>
       <th><%= I18n.t("plugins.accessions_received_report.additions") %></th>
       <td><%= @data['add_accs'] %></td>
-      <td><%= @data['add_extent'] %></td>
+      <td><%= sprintf("%.2f", @data['add_extent']) %></td>
     </tr>
     <tr>
       <th><%= I18n.t("plugins.accessions_received_report.total") %></th>
       <td><%= @data['total_accs'] %></td>
-      <td><%= @data['total_extent'] %></td>
+      <td><%= sprintf("%.2f", @data['total_extent']) %></td>
     </tr>
     </tbody>
   </table>
