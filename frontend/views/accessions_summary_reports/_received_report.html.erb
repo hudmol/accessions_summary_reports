@@ -10,17 +10,17 @@
     <tr>
       <th><%= I18n.t("plugins.accessions_received_report.new") %></th>
       <td><%= @data['new_accs'] %></td>
-      <td><%= @data['new_extent'] %></td>
+      <td><%= @data['new_extent'].round(2) %></td>
     </tr>
     <tr>
       <th><%= I18n.t("plugins.accessions_received_report.additions") %></th>
       <td><%= @data['add_accs'] %></td>
-      <td><%= @data['add_extent'] %></td>
+      <td><%= @data['add_extent'].round(2) %></td>
     </tr>
     <tr>
       <th><%= I18n.t("plugins.accessions_received_report.total") %></th>
       <td><%= @data['total_accs'] %></td>
-      <td><%= @data['total_extent'] %></td>
+      <td><%= @data['total_extent'].round(2) %></td>
     </tr>
     </tbody>
   </table>

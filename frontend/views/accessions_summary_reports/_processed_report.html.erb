@@ -11,7 +11,7 @@
     <tr>
       <th><%= I18n.t("plugins.accessions_processed_report.total") %></th>
       <td><%= @data['total_accs'] %></td>
-      <td><%= @data['total_extent'] %></td>
+      <td><%= @data['total_extent'].round(2) %></td>
     </tr>
     </tbody>
   </table>
@@ -28,7 +28,7 @@
     <tr>
       <th><%= I18n.t("plugins.accessions_processed_report.total") %></th>
       <td><%= @data['unprocessed_accs'] %></td>
-      <td><%= @data['unprocessed_extent'] %></td>
+      <td><%= @data['unprocessed_extent'].round(2) %></td>
     </tr>
     </tbody>
   </table>
