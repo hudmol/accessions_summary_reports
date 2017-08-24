@@ -1,3 +1,5 @@
+require 'date'
+
 class ArchivesSpaceService < Sinatra::Base
 
   Endpoint.get('/repositories/:repo_id/accessions_summary_reports')
@@ -16,6 +18,8 @@ class ArchivesSpaceService < Sinatra::Base
       data = run_received_report(params)
     elsif params[:report] == 'processed'
       data = run_processed_report(params)
+    elsif params[:report] == 'timeliness'
+      data = run_timeliness_report(params)
     end
 
     json_response(data)
@@ -129,6 +133,61 @@ class ArchivesSpaceService < Sinatra::Base
         data[:bad_date] << row[:id]
       end
 
+    end
+    data
+  end
+
+
+  def run_timeliness_report(params)
+    data = {}
+
+    # derby freaks out at 'begin'
+    if $db_type == :derby
+      begin_string = '"BEGIN"'
+    elsif $db_type == :mysql
+      begin_string = 'begin'
+    else
+      # warning - only tested on derby and mysql
+      begin_string = 'begin'
+    end
+
+    DB.open do |db|
+      ds = db[:accession]
+        .select(:accession__id, :accession__accession_date, :user_defined__date_3, :acq_type__value, :date__begin)
+        .left_outer_join(:user_defined, {:accession_id => :accession__id}, :table_alias => :user_defined)
+        .left_outer_join(:enumeration_value, {:id => :accession__acquisition_type_id}, :table_alias => :acq_type)
+        .join(:event_link_rlshp, {:accession_id => :accession__id}, :table_alias => :event_link)
+        .join(:event, {:id => :event_link__event_id}, :table_alias => :event)
+        .join(:date, {:event_id => :event__id}, :table_alias => :date)
+        .join(:enumeration_value, {:id => :event__event_type_id}, :table_alias => :event_type)
+        .filter(:accession__repo_id => params[:repo_id])
+        .where(:event_type__value => 'cataloged')
+        .where('accession_date >= ? AND accession_date <= ?', params[:start_date], params[:end_date])
+
+      data[:total_accs] = 0
+      data[:timely_accs] = 0
+      data[:not_timely_accs] = 0
+      data[:bad_date_accs] = 0
+      data[:bad_date] = []
+      
+      ds.each do |row|
+        data[:total_accs] += 1
+
+        begin
+          cataloged_date = Date.parse(row[:begin])
+          compare_date = row[:value] ? row[:accession_date] : row[:date_3]
+          days_difference = (cataloged_date - compare_date).to_i
+
+          if days_difference <= 90
+            data[:timely_accs] += 1
+          else
+            data[:not_timely_accs] += 1
+          end
+        rescue ArgumentError
+          data[:bad_date] << row[:id]
+          data[:bad_date_accs] += 1
+        end
+      end
     end
     data
   end

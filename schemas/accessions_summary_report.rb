@@ -10,7 +10,7 @@
       "start_date" => {"type" => "date", "minLength" => 1, "ifmissing" => "error"},
       "end_date" => {"type" => "date", "minLength" => 1, "ifmissing" => "error"},
 
-      "report" => {"type" => "string", "enum" => ["received", "processed"], "ifmissing" => "error"},
+      "report" => {"type" => "string", "enum" => ["received", "processed", "timeliness"], "ifmissing" => "error"},
 
     },
   },

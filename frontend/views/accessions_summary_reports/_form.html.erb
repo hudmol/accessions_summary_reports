@@ -5,7 +5,7 @@
     <fieldset>
     <%= form.label_and_date "start_date", {:plugin => true} %>
     <%= form.label_and_date "end_date", {:plugin => true} %>
-    <%= form.label_and_select "report", form.possible_options_for("report", true), {:plugin => true} %>
+    <%= form.label_and_select "report", form.possible_options_for("report", true, :i18n_prefix => "enumerations.accessions_summary_report_report"), {:plugin => true} %>
     </fieldset>
   </section>
 <% end %>

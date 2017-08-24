@@ -1,0 +1,41 @@
+<h2><%= I18n.t("plugins.accessions_timeliness_report.title") %></h2>
+
+<div>
+  <table class="table table-striped table-bordered table-condensed">
+    <tbody>
+    <tr> 
+      <th><%= @params['start_date'] %> &mdash; <%= @params['end_date'] %></th>
+      <th><%= I18n.t("plugins.accessions_timeliness_report.number") %></th>
+    </tr>
+    <tr>
+      <th><%= I18n.t("plugins.accessions_timeliness_report.total") %></th>
+      <td><%= @data['total_accs'] %></td>
+    </tr>
+    <tr>
+      <th><%= I18n.t("plugins.accessions_timeliness_report.timely") %></th>
+      <td><%= @data['timely_accs'] %></td>
+    </tr>
+    <tr>
+      <th><%= I18n.t("plugins.accessions_timeliness_report.not_timely") %></th>
+      <td><%= @data['not_timely_accs'] %></td>
+    </tr>
+    <tr>
+      <th><%= I18n.t("plugins.accessions_timeliness_report.bad_dates") %></th>
+      <td><%= @data['bad_date_accs'] %></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<% unless @data['bad_date'].empty? %>
+<br>
+<h4><%= I18n.t("plugins.accessions_timeliness_report.bad_date_header") %></h4>
+<div>
+  <ul>
+  <% @data['bad_date'].each do |id| %>
+    <% acc = JSONModel(:accession).find(id)["display_string"] %>
+      <li><%=  link_to acc, {:controller => :accessions, :action => :show, :id => id} %></li>
+  <% end %>
+  </ul>
+</div>
+<% end %>

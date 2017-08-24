@@ -8,6 +8,8 @@
        <%= render_aspace_partial :partial => "accessions_summary_reports/received_report" %>
      <% elsif @params['report'] =='processed' %>
        <%= render_aspace_partial :partial => "accessions_summary_reports/processed_report" %>
+     <% elsif @params['report'] =='timeliness' %>
+       <%= render_aspace_partial :partial => "accessions_summary_reports/timeliness_report" %>
      <% end %>
 
     </div>
