@@ -31,6 +31,7 @@ en:
       total: Total
       timely: Timely description (<= 3 months)
       not_timely: Not timely description (> 3 months)
+      unknown_dates: Unknown acquisition finalised date
       bad_dates: Incorrectly formatted catalogued date
       number: Accessions
       bad_date_header: The following Accessions have incorrectly formatted dates in their catalogued events

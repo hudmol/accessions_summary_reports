@@ -20,6 +20,10 @@
       <td><%= @data['not_timely_accs'] %></td>
     </tr>
     <tr>
+      <th><%= I18n.t("plugins.accessions_timeliness_report.unknown_dates") %></th>
+      <td><%= @data['unknown_date_accs'] %></td>
+    </tr>
+    <tr>
       <th><%= I18n.t("plugins.accessions_timeliness_report.bad_dates") %></th>
       <td><%= @data['bad_date_accs'] %></td>
     </tr>

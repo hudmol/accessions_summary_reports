@@ -167,6 +167,7 @@ class ArchivesSpaceService < Sinatra::Base
       data[:total_accs] = 0
       data[:timely_accs] = 0
       data[:not_timely_accs] = 0
+      data[:unknown_date_accs] = 0
       data[:bad_date_accs] = 0
       data[:bad_date] = []
       
@@ -175,7 +176,13 @@ class ArchivesSpaceService < Sinatra::Base
 
         begin
           cataloged_date = Date.parse(row[:begin])
-          compare_date = row[:value] ? row[:accession_date] : row[:date_3]
+          compare_date = ['gratis donation', 'nla (dap)'].include?(row[:value]) ? row[:accession_date] : row[:date_3]
+
+          unless compare_date
+            data[:unknown_date_accs] += 1
+            next
+          end
+
           days_difference = (cataloged_date - compare_date).to_i
 
           if days_difference <= 90
