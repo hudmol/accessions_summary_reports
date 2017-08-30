@@ -9,7 +9,7 @@ class AccessionsSummaryReportsController < ApplicationController
 
 
   def create
-    @accessions_summary_report = JSONModel(:accessions_summary_report).from_hash(params["accessions_summary_report"], false)
+    @accessions_summary_report = JSONModel(:accessions_summary_report).from_hash(params["accessions_summary_report"].to_hash, false)
     if @accessions_summary_report._exceptions.blank?
       begin
         query_hash = {
