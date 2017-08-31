@@ -160,9 +160,11 @@ class ArchivesSpaceService < Sinatra::Base
         .join(:event, {:id => :event_link__event_id}, :table_alias => :event)
         .join(:date, {:event_id => :event__id}, :table_alias => :date)
         .join(:enumeration_value, {:id => :event__event_type_id}, :table_alias => :event_type)
+        .join(:enumeration_value, {:id => :event__outcome_id}, :table_alias => :event_outcome)
         .filter(:accession__repo_id => params[:repo_id])
         .where(:event_type__value => 'cataloged')
-        .where('accession_date >= ? AND accession_date <= ?', params[:start_date], params[:end_date])
+        .where(:event_outcome__value => 'pass')
+        .where('date.begin >= ? AND date.begin <= ?', params[:start_date], params[:end_date])
 
       data[:total_accs] = 0
       data[:timely_accs] = 0
