@@ -158,13 +158,13 @@ class ArchivesSpaceService < Sinatra::Base
         .left_outer_join(:enumeration_value, {:id => :accession__acquisition_type_id}, :table_alias => :acq_type)
         .join(:event_link_rlshp, {:accession_id => :accession__id}, :table_alias => :event_link)
         .join(:event, {:id => :event_link__event_id}, :table_alias => :event)
-        .join(:date, {:event_id => :event__id}, :table_alias => :date)
+        .left_outer_join(:date, {:event_id => :event__id}, :table_alias => :date)
         .join(:enumeration_value, {:id => :event__event_type_id}, :table_alias => :event_type)
         .join(:enumeration_value, {:id => :event__outcome_id}, :table_alias => :event_outcome)
         .filter(:accession__repo_id => params[:repo_id])
         .where(:event_type__value => 'cataloged')
         .where(:event_outcome__value => 'pass')
-        .where('date.begin >= ? AND date.begin <= ?', params[:start_date], params[:end_date])
+        .where('(date.begin >= ? AND date.begin <= ?) OR date.begin IS NULL', params[:start_date], params[:end_date])
 
       data[:total_accs] = 0
       data[:timely_accs] = 0
@@ -176,6 +176,12 @@ class ArchivesSpaceService < Sinatra::Base
       ds.each do |row|
         data[:total_accs] += 1
 
+        unless row[:begin]
+          data[:bad_date] << row[:id]
+          data[:bad_date_accs] += 1
+          next
+        end
+          
         begin
           cataloged_date = Date.parse(row[:begin])
           compare_date = ['gratis donation', 'nla (dap)'].include?(row[:value]) ? row[:accession_date] : row[:date_3]
