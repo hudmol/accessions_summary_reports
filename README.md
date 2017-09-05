@@ -1,7 +1,7 @@
 accessions_summary_reports
 ==========================
 
-An ArchivesSpace plugin that provides summary reports on Accessions.
+An ArchivesSpace (v1.5.x - v2.1.x) plugin that provides summary reports on Accessions.
 
 This plugin was developed for the National Library of Australia by Hudson Molonglo Pty Ltd.
 
