@@ -30,6 +30,7 @@ class ArchivesSpaceService < Sinatra::Base
 
   def run_received_report(params)
     data = {}
+
     DB.open do |db|
       ds = db[:accession]
         .select(:accession__id, :accession__identifier, :user_defined__boolean_1, :extent__number)
