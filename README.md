@@ -1,16 +1,16 @@
 accessions_summary_reports
 ==========================
 
-An ArchivesSpace (v1.5.x - v2.1.x) plugin that provides summary reports on Accessions.
+An ArchivesSpace (v3.x) plugin that provides summary reports on Accessions.
 
-This plugin was developed for the National Library of Australia by Hudson Molonglo Pty Ltd.
+This plugin was developed for the National Library of Australia by Hudson Molonglo Pty Ltd. 
 
 
 # Getting Started
 
 Download the latest release from the Releases tab in Github:
 
-    https://github.com/hudmol/accessions_summary_reports/releases
+    https://github.com/nla/accessions_summary_reports/releases
 
 Unzip the release in the plugins directory of your ArchivesSpace:
 
@@ -25,11 +25,11 @@ Make sure you uncomment this line (i.e., remove the leading '#' if present)
 
 Then restart ArchivesSpace, see:
 
-    https://github.com/archivesspace/archivesspace/blob/master/README.md
+    https://archivesspace.github.io/tech-docs/readme_implement.html
 
 For more information about plugins see:
 
-    https://github.com/archivesspace/archivesspace/blob/master/plugins/README.md
+    https://archivesspace.github.io/tech-docs/customization/plugins.html
 
 
 # How it Works
