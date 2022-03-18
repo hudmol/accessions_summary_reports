@@ -1,6 +1,6 @@
 class AccessionsSummaryReportsController < ApplicationController
 
-  skip_before_filter :unauthorised_access
+  skip_before_action :unauthorised_access
 
   def index
 #    @accessions_summary_report = JSONModel(:accessions_summary_report).new
